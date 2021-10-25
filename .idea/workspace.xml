@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2f40b2d8-a6d5-41df-841d-ebeb2b5b743a" name="Changes" comment="Dodano person">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LAB2/src/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LAB2/src/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LAB2/src/PersonConsoleApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LAB2/src/PersonConsoleApp.java" afterDir="false" />
-    </list>
+    <list default="true" id="2f40b2d8-a6d5-41df-841d-ebeb2b5b743a" name="Changes" comment="Stworzony cały mechanizm bazy danych" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635156133347</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Stworzony cały mechanizm bazy danych">
+      <created>1635174427552</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1635174427552</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -132,6 +135,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Dodano person" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dodano person" />
+    <MESSAGE value="Stworzony cały mechanizm bazy danych" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stworzony cały mechanizm bazy danych" />
   </component>
 </project>

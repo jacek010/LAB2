@@ -2,8 +2,6 @@ package LAB2.src;
 
 import java.util.*;
 
-import static jdk.internal.logger.DefaultLoggerFinder.SharedLoggers.application;
-
 /**
  * Program: Aplikacja działająca w oknie konsoli, która umożliwia testowanie 
  *          operacji wykonywanych na obiektach klasy Person.
