@@ -1,6 +1,8 @@
 package LAB2.src;
 
-import java.util.Arrays;
+import java.util.*;
+
+import static jdk.internal.logger.DefaultLoggerFinder.SharedLoggers.application;
 
 /**
  * Program: Aplikacja działająca w oknie konsoli, która umożliwia testowanie 
@@ -24,6 +26,12 @@ public class PersonConsoleApp {
 			"3 - Modyfikuj dane osoby   \n" +
 			"4 - Wczytaj dane z pliku   \n" +
 			"5 - Zapisz dane do pliku   \n" +
+			"6 - Lista osób zapisana w postaci HashSet   \n" +
+			"7 - Lista osób zapisana w postaci TreeSet   \n" +
+			"8 - Lista osób zapisana w postaci ArrayList   \n" +
+			"9 - Lista osób zapisana w postaci LinkedList   \n" +
+			"10 - Lista osób zapisana w postaci HashMap   \n" +
+			"11 - Lista osób zapisana w postaci TreeMap   \n" +
 			"0 - Zakończ program        \n";	
 	
 	private static final String CHANGE_MENU = 
@@ -32,7 +40,15 @@ public class PersonConsoleApp {
 			"2 - Nazwisko       \n" + 
 	        "3 - Rok urodzenia  \n" + 
 			"4 - Stanowisko     \n" +
+			"5 - Id     \n" +
 	        "0 - Powrót do menu głównego\n";
+
+	Set<Person> bazaDanychHashSet = new HashSet<>();
+	Set<Person> bazaDanychTreeSet = new TreeSet<>();
+	List<Person> bazaDanychArrayList = new ArrayList<>();
+	List<Person> bazaDanychLinkedList = new LinkedList<>();
+	Map<Integer, Person> bazaDanychHashMap = new HashMap<>();
+	Map<Integer, Person> bazaDanychTreeMap = new TreeMap<>();
 
 	
 	/**
@@ -64,27 +80,31 @@ public class PersonConsoleApp {
 	 *         działania za pomocą metody System.exit(0); 
 	 */
 	public void runMainLoop() {
+
+
+
 		UI.printMessage(GREETING_MESSAGE);
 
 		while (true) {
 			UI.clearConsole();
 			showCurrentPerson();
-
+			int i=1;
 			try {
 				switch (UI.enterInt(MENU + "==>> ")) {
 				case 1:
 					// utworzenie nowej osoby
 					currentPerson = createNewPerson();
+					addToDataBase(currentPerson);
 					break;
 				case 2:
 					// usunięcie danych aktualnej osoby.
-					currentPerson = null;
-					UI.printInfoMessage("Dane aktualnej osoby zostały usunięte");
+					removeFromDatabase(chooseID());
+					UI.printInfoMessage("Dane osoby zostały usunięte");
 					break;
 				case 3:
 					// zmiana danych dla aktualnej osoby
 					if (currentPerson == null) throw new PersonException("Żadna osoba nie została utworzona.");
-					changePersonData(currentPerson);
+					changePersonDataInDatabase(chooseID());
 					break;
 				case 4: {
 					// odczyt danych z pliku tekstowego.
@@ -99,8 +119,74 @@ public class PersonConsoleApp {
 					Person.printToFile(file_name, currentPerson);
 					UI.printInfoMessage("Dane aktualnej osoby zostały zapisane do pliku " + file_name);
 				}
-
 					break;
+
+				case 6: {
+						//wyświetlenie listy osób zapisanych w postaci HashSet
+					UI.printMessage("Lista osób zapisana w postaci HashSet:");
+
+					for (Person person: bazaDanychHashSet) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(person);
+						i++;
+						}
+					}
+					break;
+				case 7: {
+						//wyświetlenie listy osób zapisanych w postaci TreeSet
+					UI.printMessage("Lista osób zapisana w postaci TreeSet:");
+					for (Person person: bazaDanychTreeSet) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(person);
+						i++;
+					}
+					}
+					break;
+				case 8: {
+						//wyświetlenie listy osób zapisanych w postaci ArrayList
+					UI.printMessage("Lista osób zapisana w postaci ArrayList");
+					for (Person person: bazaDanychArrayList) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(person);
+						i++;
+					}
+					}
+					break;
+				case 9: {
+						//wyświetlenie listy osób zapisanych w postaci LinkedList
+					UI.printMessage("Lista osób zapisana w postaci LinkedList:");
+					for (Person person: bazaDanychLinkedList) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(person);
+						i++;
+					}
+					}
+					break;
+				case 10: {
+						//wyświetlenie listy osób zapisanych w postaci HashMap
+					UI.printMessage("Lista osób zapisana w postaci HashMap:");
+					Set<Map.Entry<Integer, Person>> entrySet = bazaDanychHashMap.entrySet();
+					for(Map.Entry<Integer, Person> entry: entrySet) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(entry.getValue());
+						i++;
+						System.out.println("Id: "+entry.getKey());
+					}
+					}
+					break;
+				case 11: {
+						//wyświetlenie listy osób zapisanych w postaci TreeMap
+					UI.printMessage("Lista osób zapisana w postaci TreeMap:");
+					Set<Map.Entry<Integer, Person>> entrySet = bazaDanychTreeMap.entrySet();
+					for(Map.Entry<Integer, Person> entry: entrySet) {
+						UI.printMessage("Indeks podczas wypisywania: "+i);
+						showPerson(entry.getValue());
+						i++;
+						System.out.println("Id: "+entry.getKey());
+					}
+					}
+					break;
+
 				case 0:
 					// zakończenie działania programu
 					UI.printInfoMessage("\nProgram zakończył działanie!");
@@ -138,7 +224,8 @@ public class PersonConsoleApp {
 			  .append("      Imię: ").append(person.getFirstName()).append("\n")
 			  .append("  Nazwisko: ").append(person.getLastName()).append("\n")
 			  .append("   Rok ur.: ").append(person.getBirthYear()).append("\n")
-			  .append("Stanowisko: ").append(person.getJob()).append("\n");
+			  .append("Stanowisko: ").append(person.getJob()).append("\n")
+				.append("Id: ").append(person.getId()).append("\n");
 		} else
 			sb.append( "Brak danych osoby\n" );
 		UI.printMessage( sb.toString() );
@@ -158,6 +245,7 @@ public class PersonConsoleApp {
 		String birth_year = UI.enterString("Podaj rok ur.: ");
 		UI.printMessage("Dozwolone stanowiska:" + Arrays.deepToString(PersonJob.values()));
 		String job_name = UI.enterString("Podaj stanowisko: ");
+		int id = UI.enterInt("Podaj Id: ");
 		Person person;
 		try { 
 			// Utworzenie nowego obiektu klasy Person oraz
@@ -165,6 +253,7 @@ public class PersonConsoleApp {
 			person = new Person(first_name, last_name);
 			person.setBirthYear(birth_year);
 			person.setJob(job_name);
+			person.setId(id);
 		} catch (PersonException e) {    
 			// Tu są wychwytywane wyjątki zgłaszane przez metody klasy Person,
 			// gdy nie są spełnione ograniczenia nałożone na dopuszczalne wartości
@@ -216,6 +305,38 @@ public class PersonConsoleApp {
 			}
 		}
 	}
-	
+
+	public int chooseID(){
+		int id = UI.enterInt("Type person ID: ");
+		Set<Map.Entry<Integer, Person>> entrySet = bazaDanychTreeMap.entrySet();
+		for(Map.Entry<Integer, Person> entry: entrySet) {
+			if(entry.getValue().getId() == id) currentPerson = entry.getValue();
+		}
+		return id;
+	}
+
+	public void addToDataBase(Person currentPerson){
+		bazaDanychHashSet.add(currentPerson); //dodanie osoby do bazy danych w postaci HashSet
+		bazaDanychTreeSet.add(currentPerson); //dodanie osoby do bazy danych w postaci TreeSet
+		bazaDanychArrayList.add(currentPerson); //dodanie osoby do bazy danych w postaci ArrayList
+		bazaDanychLinkedList.add(currentPerson); //dodanie osoby do bazy danych w postaci LinkedList
+		bazaDanychHashMap.put(currentPerson.getId(), currentPerson); //dodanie osoby do bazy danych w postaci HashMap
+		bazaDanychTreeMap.put(currentPerson.getId(), currentPerson); //dodanie osoby do bazy danych w postaci TreeMap
+	}
+
+	public void removeFromDatabase(int id) {
+		bazaDanychHashSet.remove(currentPerson);
+		bazaDanychTreeSet.remove(currentPerson);
+		bazaDanychArrayList.remove(currentPerson);
+		bazaDanychLinkedList.remove(currentPerson);
+		bazaDanychHashMap.remove(id);
+		bazaDanychTreeMap.remove(id);
+	}
+
+	public void changePersonDataInDatabase(int id){
+		changePersonData(currentPerson);
+		removeFromDatabase(id);
+		addToDataBase(currentPerson);
+	}
 	
 }  // koniec klasy PersonConsoleApp

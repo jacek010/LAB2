@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 
 /*
@@ -79,12 +80,13 @@ class PersonException extends Exception {
  * niedozwolonej wartości, któremuś z atrybutów jest zgłaszany wyjątek
  * zawierający stosowny komunikat.
  */
-public class Person {
+public class Person implements Comparable {
 	
 	private String firstName;
 	private String lastName;
 	private int birthYear;
 	private PersonJob job;
+	private int id;
  
 	
 	public Person(String first_name, String last_name) throws PersonException {
@@ -93,12 +95,28 @@ public class Person {
 		job = PersonJob.UNKNOWN;
 	}
 
-	
+	@Override
+	public int compareTo(Object o) {
+		return 0;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
 
-	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Person person = (Person) o;
+		return getBirthYear() == person.getBirthYear() && Objects.equals(getFirstName(), person.getFirstName()) && getLastName().equals(person.getLastName());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getFirstName(), getLastName(), getBirthYear());
+	}
+
 	public void setFirstName(String first_name) throws PersonException {
 		if ((first_name == null) || first_name.equals(""))
 			throw new PersonException("Pole <Imię> musi być wypełnione.");
@@ -212,5 +230,12 @@ public class Person {
 			throw new PersonException("Wystąpił błąd podczas odczytu danych z pliku.");
 		}	
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 }  // koniec klasy Person
